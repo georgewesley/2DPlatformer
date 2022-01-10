@@ -137,15 +137,28 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(playerCollider.IsTouchingLayers(LayerMask.GetMask("Enemies", "Hazards", "Attacks")))
+        if(playerCollider.IsTouchingLayers(LayerMask.GetMask("Hazards", "Attacks")))
         {
-            isAlive = false;
-            playerAnimation.SetTrigger("die");
-            playerBody.bodyType = RigidbodyType2D.Static;
+            Die();
+        }
+        else if(playerCollider.IsTouchingLayers(LayerMask.GetMask("Enemies"))) {
+            if(collision.gameObject.GetComponent<EnemyMovement>().isAlive) {
+                Die();
+            }
         }
         if (collision.gameObject.tag == "Attack")
         {
             Destroy(collision.gameObject);
         }
+    }
+
+    private void Die() {
+            isAlive = false;
+            playerAnimation.SetTrigger("die");
+            playerBody.isKinematic = true;
+            //playerBody.velocity = new Vector2(0, -gravity);
+            // problem with above is that there is no collider so no way to tell when is on ground
+            playerCollider.enabled = false;
+            feetCollider.enabled = false;
     }
 }
