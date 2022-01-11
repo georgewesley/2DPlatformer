@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMovement : MonoBehaviour
+public class ExplosionEnemy : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 1f;
 
@@ -51,15 +51,29 @@ public class EnemyMovement : MonoBehaviour
     {
         if(enemyCollider.IsTouchingLayers(LayerMask.GetMask("Hazards", "Attacks")))
         {
+            Die();
+        }
+        if (collision.gameObject.tag == "Attack")
+        {
+            Destroy(collision.gameObject);
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.gameObject.tag == "Explosion") {
+            Die();
+        }
+        
+    }
+    private void Die() 
+    {
+        if(isAlive) 
+        {
             isAlive = false;
             myRigidBody.isKinematic = true;
             enemyAnimator.SetTrigger("death");
             enemyCollider.enabled = false;
             particles.Play();
         }
-        if (collision.gameObject.tag == "Attack")
-        {
-            Destroy(collision.gameObject);
-        }
+        
     }
 }

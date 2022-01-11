@@ -8,6 +8,7 @@ TagManager:
   - ground
   - Attack
   - Background
+  - Explosion
   layers:
   - Default
   - TransparentFX

@@ -20,7 +20,7 @@ public class GameSession : MonoBehaviour
 
     public void ProcessPlayerDeath() {
         if (playerLives > 1) {
-            playerLives --;
+            playerLives = playerLives - 1;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         else {

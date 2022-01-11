@@ -69,6 +69,7 @@ public class PlayerMovement : MonoBehaviour
     void OnFire(InputValue value)
     {
         if(isAlive&&!isOnCoolDown&&!sword.GetComponent<BoxCollider2D>().IsTouchingLayers(LayerMask.GetMask("Ground")))
+        //last condition prevents from spawning inside walls
         {
             isOnCoolDown = true;
             playerAnimation.SetTrigger("attack");
@@ -140,13 +141,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(playerCollider.IsTouchingLayers(LayerMask.GetMask("Hazards", "Attacks")))
+        if(playerCollider.IsTouchingLayers(LayerMask.GetMask("Hazards", "Attacks"))&&isAlive)
         {
             Die();
         }
-        else if(playerCollider.IsTouchingLayers(LayerMask.GetMask("Enemies")) && collision.gameObject.GetComponent<EnemyMovement>() != null) {
+        else if(playerCollider.IsTouchingLayers(LayerMask.GetMask("Enemies")) && collision.gameObject.GetComponent<ExplosionEnemy>() != null && isAlive) {
             //not sure why but line below is still called without the second bool above. I would think that a collision would not even occur since it is disabled.
-            if(collision.gameObject.GetComponent<EnemyMovement>().isAlive) {
+            if(collision.gameObject.GetComponent<ExplosionEnemy>().isAlive) {
                 Die();
             }
         }
@@ -157,7 +158,15 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void OnTriggerExit2D(Collider2D other) {
-        if(other.gameObject.tag == "Background") {
+        if(other.gameObject.tag == "Background" && isAlive || (other.gameObject.tag == "Explosion" && isAlive)) 
+        //if no isAlive here, then this will trigger second death if a collider is turned off
+        {
+            Die();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.gameObject.tag == "Explosion" && isAlive) {
             Die();
         }
     }
@@ -168,11 +177,6 @@ public class PlayerMovement : MonoBehaviour
             playerBody.velocity = new Vector2(0f, playerBody.velocity.y);
             playerAnimation.SetTrigger("die");
             Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemies"), LayerMask.NameToLayer("Player"), true);
-            //playerBody.isKinematic = true;
-            //playerBody.velocity = new Vector2(0, -gravity);
-            // problem with above is that there is no collider so no way to tell when is on ground
-            //playerCollider.enabled = false;
-            feetCollider.enabled = false;
             StartCoroutine(Respawn());
     }
 
