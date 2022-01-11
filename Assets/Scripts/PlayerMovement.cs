@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 public class PlayerMovement : MonoBehaviour
 {
     Vector2 moveInput;
@@ -15,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] GameObject attack;
     [SerializeField] Transform sword;
     [SerializeField] float coolDown;
+
+    GameSession gameSession;
     Animator playerAnimation;
     CapsuleCollider2D playerCollider;
     BoxCollider2D feetCollider;
@@ -25,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        
+        gameSession = FindObjectOfType<GameSession>();
         playerBody = GetComponent<Rigidbody2D>();
         gravity = playerBody.gravityScale;
         playerAnimation = GetComponent<Animator>();
@@ -42,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
             ClimbLadder();
             FlipSprite();
             playerAnimation.SetFloat("Y Speed", playerBody.velocity.y + Mathf.Epsilon);
-            isGrounded = feetCollider.IsTouchingLayers(LayerMask.GetMask("ground"));
+            isGrounded = feetCollider.IsTouchingLayers(LayerMask.GetMask("Ground"));
         }
     }
 
@@ -65,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
 
     void OnFire(InputValue value)
     {
-        if(isAlive&&!isOnCoolDown)
+        if(isAlive&&!isOnCoolDown&&!sword.GetComponent<BoxCollider2D>().IsTouchingLayers(LayerMask.GetMask("Ground")))
         {
             isOnCoolDown = true;
             playerAnimation.SetTrigger("attack");
@@ -114,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
     void ClimbLadder()
     {
         playerAnimation.SetBool("isClimbing", false);
-        if (!playerCollider.IsTouchingLayers(LayerMask.GetMask("climbing")))
+        if (!playerCollider.IsTouchingLayers(LayerMask.GetMask("Climbing")))
         {
             playerBody.gravityScale = gravity;
             return;
@@ -141,7 +144,8 @@ public class PlayerMovement : MonoBehaviour
         {
             Die();
         }
-        else if(playerCollider.IsTouchingLayers(LayerMask.GetMask("Enemies"))) {
+        else if(playerCollider.IsTouchingLayers(LayerMask.GetMask("Enemies")) && collision.gameObject.GetComponent<EnemyMovement>() != null) {
+            //not sure why but line below is still called without the second bool above. I would think that a collision would not even occur since it is disabled.
             if(collision.gameObject.GetComponent<EnemyMovement>().isAlive) {
                 Die();
             }
@@ -152,13 +156,29 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit2D(Collider2D other) {
+        if(other.gameObject.tag == "Background") {
+            Die();
+        }
+    }
+
     private void Die() {
             isAlive = false;
+            playerBody.gravityScale = gravity;
+            playerBody.velocity = new Vector2(0f, playerBody.velocity.y);
             playerAnimation.SetTrigger("die");
-            playerBody.isKinematic = true;
+            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemies"), LayerMask.NameToLayer("Player"), true);
+            //playerBody.isKinematic = true;
             //playerBody.velocity = new Vector2(0, -gravity);
             // problem with above is that there is no collider so no way to tell when is on ground
-            playerCollider.enabled = false;
+            //playerCollider.enabled = false;
             feetCollider.enabled = false;
+            StartCoroutine(Respawn());
+    }
+
+    IEnumerator Respawn() {
+        yield return new WaitForSecondsRealtime(3);
+        gameSession.ProcessPlayerDeath();
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemies"), LayerMask.NameToLayer("Player"), false);
     }
 }

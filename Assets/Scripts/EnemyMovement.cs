@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 1f;
+
+    [SerializeField] ParticleSystem particles;
     Rigidbody2D myRigidBody;
     Transform currentTransform;
     Animator enemyAnimator;
@@ -53,6 +55,7 @@ public class EnemyMovement : MonoBehaviour
             myRigidBody.isKinematic = true;
             enemyAnimator.SetTrigger("death");
             enemyCollider.enabled = false;
+            particles.Play();
         }
         if (collision.gameObject.tag == "Attack")
         {
