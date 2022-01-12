@@ -8,9 +8,12 @@ public class Attack : MonoBehaviour
     SpriteRenderer sprite;
     [SerializeField] float bulletSpeed;
     [SerializeField] GameObject explosion;
+    [SerializeField] GameObject lineExplosion;
     ParticleSystem.MainModule settings;
     PlayerMovement player;
     Transform attackScale;
+    BoxCollider2D boxCollider;
+    PolygonCollider2D polyCollider;
 
     public int bounces = 0;
     float xSpeed;
@@ -24,6 +27,8 @@ public class Attack : MonoBehaviour
         xSpeed = playerScale * bulletSpeed;
         attackScale.localScale = new Vector3 (playerScale, 1f);
         settings = explosion.GetComponentInChildren<ParticleSystem>().main;
+        polyCollider = gameObject.GetComponent<PolygonCollider2D>();
+        boxCollider = gameObject.GetComponent<BoxCollider2D>();
     }
 
     
@@ -33,34 +38,43 @@ public class Attack : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "ground" && bounces < 1)
-        {
-            sprite.color = new Color(0, 1, 1, 1);
-            Debug.Log(xSpeed);
-            xSpeed = xSpeed/2;
-            Debug.Log(xSpeed);
-            bounces += 1;
-            attackScale.localScale = new Vector3(-attackScale.localScale.x, attackScale.localScale.y);
-            xSpeed = attackScale.localScale.x * bulletSpeed;
-        }
-        else if(collision.gameObject.tag == "Attack") {
-            if(bounces == 1) {
-                settings.startColor = new Color (0, 1, 1, 1);
-            }
-            else {
-                settings.startColor = new Color(1,1,1,1);
-            }
-            Instantiate(explosion, attackScale.position, transform.rotation);
-            Destroy(gameObject);
-        }
-        else
-        {
-            if(bounces == 1)
+        if(collision.otherCollider == polyCollider) { //front
+            if(collision.gameObject.tag == "ground" && bounces < 1)
             {
-                settings.startColor = new Color (0, 1, 1, 1);
-                Instantiate(explosion, attackScale.position, transform.rotation);
+                sprite.color = new Color(0, 1, 1, 1);
+                bounces += 1;
+                attackScale.localScale = new Vector3(-attackScale.localScale.x, attackScale.localScale.y);
+                xSpeed = attackScale.localScale.x * bulletSpeed/2;
             }
-            Destroy(gameObject);
+            else if(collision.gameObject.tag == "Attack") {
+                if(bounces == 1) {
+                    settings.startColor = new Color (0, 1, 1, 1);
+                }
+                else {
+                    settings.startColor = new Color(1,1,1,1);
+                }
+                Instantiate(explosion, attackScale.position, transform.rotation);
+                Destroy(gameObject);
+            }
+            else
+            {
+                if(bounces == 1)
+                {
+                    settings.startColor = new Color (0, 1, 1, 1);
+                    Instantiate(explosion, attackScale.position, transform.rotation);
+                }
+                Destroy(gameObject);
+            }
+        }
+        else if(collision.otherCollider == boxCollider) //back
+        { 
+            Debug.Log("BOX");
+            if(collision.gameObject.tag == "Attack" && bounces == 1) 
+            {
+                transform.eulerAngles = new Vector3(0, 0, -90*Mathf.Sign(attackScale.localScale.x));
+                Instantiate(lineExplosion, attackScale.position, transform.rotation);
+                Destroy(gameObject);
+            }
         }
     }
 }

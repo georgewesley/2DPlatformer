@@ -58,13 +58,10 @@ public class ExplosionEnemy : MonoBehaviour
             Destroy(collision.gameObject);
         }
     }
-    private void OnTriggerEnter2D(Collider2D other) {
-        if(other.gameObject.tag == "Explosion") {
-            Die();
-        }
-        
+    private void OnParticleCollision(GameObject other) {
+        Die();
     }
-    private void Die() 
+    public void Die() 
     {
         if(isAlive) 
         {

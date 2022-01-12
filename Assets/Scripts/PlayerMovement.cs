@@ -171,7 +171,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Die() {
+    private void OnParticleCollision(GameObject other) {
+        Die();
+    }
+    public void Die() {
             isAlive = false;
             playerBody.gravityScale = gravity;
             playerBody.velocity = new Vector2(0f, playerBody.velocity.y);
