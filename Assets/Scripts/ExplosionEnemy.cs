@@ -59,7 +59,9 @@ public class ExplosionEnemy : MonoBehaviour
         }
     }
     private void OnParticleCollision(GameObject other) {
-        Die();
+        if(other.gameObject.tag == "Explosion") {
+            Die();
+        }
     }
     public void Die() 
     {

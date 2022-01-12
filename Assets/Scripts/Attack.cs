@@ -9,6 +9,7 @@ public class Attack : MonoBehaviour
     [SerializeField] float bulletSpeed;
     [SerializeField] GameObject explosion;
     [SerializeField] GameObject lineExplosion;
+    [SerializeField] GameObject verticalExplosion;
     ParticleSystem.MainModule settings;
     PlayerMovement player;
     Transform attackScale;
@@ -49,6 +50,9 @@ public class Attack : MonoBehaviour
             else if(collision.gameObject.tag == "Attack") {
                 if(bounces == 1) {
                     settings.startColor = new Color (0, 1, 1, 1);
+                    if(collision.gameObject.GetComponent<Attack>().bounces == 1) { // if both attacks are blue
+                        Instantiate(verticalExplosion, attackScale.position, transform.rotation);
+                    }
                 }
                 else {
                     settings.startColor = new Color(1,1,1,1);

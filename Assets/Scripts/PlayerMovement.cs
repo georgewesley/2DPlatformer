@@ -172,10 +172,13 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void OnParticleCollision(GameObject other) {
-        Die();
+        if(other.gameObject.tag == "Explosion") {
+            Die();
+        }
     }
     public void Die() {
             isAlive = false;
+            playerCollider.enabled = false;
             playerBody.gravityScale = gravity;
             playerBody.velocity = new Vector2(0f, playerBody.velocity.y);
             playerAnimation.SetTrigger("die");

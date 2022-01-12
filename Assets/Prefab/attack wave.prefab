@@ -150,6 +150,7 @@ MonoBehaviour:
   bulletSpeed: 10
   explosion: {fileID: 612467832597912054, guid: 4d7c3ae2007898042a958ed2f83aaddf, type: 3}
   lineExplosion: {fileID: 7752906934721579369, guid: dec8867de596cfd439b4b466e58275d8, type: 3}
+  verticalExplosion: {fileID: 7752906934721579369, guid: ac84fecb8d8c0a5418f6ed3b8d805f2e, type: 3}
   bounces: 0
 --- !u!60 &2742691629316938788
 PolygonCollider2D:
