@@ -14,8 +14,4 @@ public class Explosion : MonoBehaviour
         yield return new WaitForSeconds(1);
         Destroy(gameObject);
     }
-
-    private void OnParticleTrigger() {
-        Debug.Log("Triggered");
-    }
 }

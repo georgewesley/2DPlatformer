@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     Animator playerAnimation;
     CapsuleCollider2D playerCollider;
     BoxCollider2D feetCollider;
+    public Vector3 initialPosition;
     bool isGrounded = false;
     bool isAlive = true;
     bool isOnCoolDown = false;
@@ -34,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
         playerAnimation = GetComponent<Animator>();
         playerCollider = GetComponent<CapsuleCollider2D>();
         feetCollider = GetComponent<BoxCollider2D>();
+        initialPosition = GetComponent<Transform>().position;
     }
 
     
@@ -145,9 +147,9 @@ public class PlayerMovement : MonoBehaviour
         {
             Die();
         }
-        else if(playerCollider.IsTouchingLayers(LayerMask.GetMask("Enemies")) && collision.gameObject.GetComponent<ExplosionEnemy>() != null && isAlive) {
+        else if(playerCollider.IsTouchingLayers(LayerMask.GetMask("Enemies")) && collision.gameObject.GetComponent<Enemy>() != null && isAlive) {
             //not sure why but line below is still called without the second bool above. I would think that a collision would not even occur since it is disabled.
-            if(collision.gameObject.GetComponent<ExplosionEnemy>().isAlive) {
+            if(collision.gameObject.GetComponent<Enemy>().isAlive) {
                 Die();
             }
         }
@@ -172,23 +174,26 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void OnParticleCollision(GameObject other) {
-        if(other.gameObject.tag == "Explosion") {
+        if(other.gameObject.tag == "Explosion"&&isAlive) {
             Die();
         }
     }
     public void Die() {
-            isAlive = false;
-            playerCollider.enabled = false;
-            playerBody.gravityScale = gravity;
-            playerBody.velocity = new Vector2(0f, playerBody.velocity.y);
-            playerAnimation.SetTrigger("die");
-            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemies"), LayerMask.NameToLayer("Player"), true);
-            StartCoroutine(Respawn());
+        isAlive = false;
+        playerCollider.enabled = false;
+        playerBody.gravityScale = gravity;
+        playerBody.velocity = new Vector2(0f, playerBody.velocity.y);
+        playerAnimation.SetTrigger("die");
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemies"), LayerMask.NameToLayer("Player"), true);
+        StartCoroutine(Respawn());
     }
 
     IEnumerator Respawn() {
         yield return new WaitForSecondsRealtime(3);
         gameSession.ProcessPlayerDeath();
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemies"), LayerMask.NameToLayer("Player"), false);
+        isAlive = true;
+        playerCollider.enabled = true;
+        playerAnimation.SetTrigger("alive");
     }
 }

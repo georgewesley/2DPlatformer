@@ -3830,7 +3830,7 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 1280
+      m_Bits: 5376
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -3841,14 +3841,13 @@ ParticleSystem:
     enabled: 0
     serializedVersion: 2
     inside: 1
-    outside: 0
-    enter: 0
-    exit: 0
+    outside: 1
+    enter: 1
+    exit: 1
     colliderQueryMode: 0
     radiusScale: 1
     primitives:
-    - {fileID: 5831130008606949145, guid: c4316969cd66cef43a5b32aeab7a60ce, type: 3}
-    - {fileID: 1358140337751546779, guid: 8ce08aa0b2551464d92611e9fc493fdd, type: 3}
+    - {fileID: 6369573673770427122, guid: 03705101358f74340ae8d57e7c093d87, type: 3}
   SubModule:
     serializedVersion: 2
     enabled: 0

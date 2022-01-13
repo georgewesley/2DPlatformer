@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class Exit : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D other) {
-        if(other.gameObject.tag == "Player") {
+        if(other.gameObject.tag == "Player"&&FindObjectOfType<Enemy>() == null) {
             if(SceneManager.sceneCountInBuildSettings != SceneManager.GetActiveScene().buildIndex+1) {
                 StartCoroutine(SceneDelay());
             }

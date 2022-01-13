@@ -151,6 +151,7 @@ MonoBehaviour:
   explosion: {fileID: 612467832597912054, guid: 4d7c3ae2007898042a958ed2f83aaddf, type: 3}
   lineExplosion: {fileID: 7752906934721579369, guid: dec8867de596cfd439b4b466e58275d8, type: 3}
   verticalExplosion: {fileID: 7752906934721579369, guid: ac84fecb8d8c0a5418f6ed3b8d805f2e, type: 3}
+  superExplosion: {fileID: 7328460538933913178, guid: 4656ec29a8ed35c4dbc9c7b1ea0832b3, type: 3}
   bounces: 0
 --- !u!60 &2742691629316938788
 PolygonCollider2D:
