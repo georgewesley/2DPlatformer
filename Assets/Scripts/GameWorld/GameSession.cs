@@ -55,6 +55,8 @@ public class GameSession : MonoBehaviour
     public void UpdateScore(int score)
     {
         string text = scoreText.text.Remove(0, 6);
+        Debug.Log(text);
+        Debug.Log(score);
         scoreText.text = "Score: " + (int.Parse(text) + score).ToString();
     }
 

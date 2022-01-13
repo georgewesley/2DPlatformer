@@ -6,6 +6,7 @@ using UnityEngine.Audio;
 public class Coin : MonoBehaviour
 {
     [SerializeField] AudioClip coinPickup;
+    [SerializeField] int coinScore;
     GameSession game;
 
     private void Start()
@@ -16,7 +17,7 @@ public class Coin : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            game.UpdateScore(100);
+            game.UpdateScore(coinScore);
             AudioSource.PlayClipAtPoint(coinPickup, Camera.main.transform.position + new Vector3(0, 0, -1));
             Destroy(gameObject);
         }

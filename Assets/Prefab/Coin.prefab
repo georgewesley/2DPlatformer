@@ -136,3 +136,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinPickup: {fileID: 8300000, guid: 3c49aef45e86d2a4f864976ff4c29c28, type: 3}
+  coinScore: 100
