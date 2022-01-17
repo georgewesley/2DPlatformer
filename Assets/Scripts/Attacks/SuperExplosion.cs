@@ -4,11 +4,7 @@ using UnityEngine;
 
 public class SuperExplosion : Explosion
 {
-    void Start()
-    {
-        StartCoroutine(Kill());
-    }
-    IEnumerator Kill()
+    public override IEnumerator DestroySelf()
     {
         yield return new WaitForSeconds(20);
         Destroy(gameObject);

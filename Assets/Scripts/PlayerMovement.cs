@@ -16,7 +16,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] GameObject attack;
     [SerializeField] Transform sword;
     [SerializeField] float coolDown;
+    [SerializeField] AudioClip attackSound;
 
+    AudioSource playerSound;
     GameSession gameSession;
     Animator playerAnimation;
     CapsuleCollider2D playerCollider;
@@ -36,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
         playerCollider = GetComponent<CapsuleCollider2D>();
         feetCollider = GetComponent<BoxCollider2D>();
         initialPosition = GetComponent<Transform>().position;
+        playerSound = GetComponent<AudioSource>();
     }
 
     
@@ -75,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
         {
             isOnCoolDown = true;
             playerAnimation.SetTrigger("attack");
+            playerSound.PlayOneShot(attackSound);
             StartCoroutine(InstantiateAttack());
         }
        

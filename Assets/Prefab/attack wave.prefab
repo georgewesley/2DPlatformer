@@ -152,6 +152,9 @@ MonoBehaviour:
   lineExplosion: {fileID: 7752906934721579369, guid: dec8867de596cfd439b4b466e58275d8, type: 3}
   verticalExplosion: {fileID: 7752906934721579369, guid: ac84fecb8d8c0a5418f6ed3b8d805f2e, type: 3}
   superExplosion: {fileID: 7328460538933913178, guid: 4656ec29a8ed35c4dbc9c7b1ea0832b3, type: 3}
+  wallBounce: {fileID: 8300000, guid: afb2f2751bec3c24eb5b3f5e7b45be12, type: 3}
+  attackBounce: {fileID: 8300000, guid: fdd31ebdbe1b9eb439e9895781bb450a, type: 3}
+  superChargedSound: {fileID: 8300000, guid: f2839bcb13940bb40827176daac3aa27, type: 3}
   bounces: 0
 --- !u!60 &2742691629316938788
 PolygonCollider2D:

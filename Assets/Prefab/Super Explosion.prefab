@@ -9730,3 +9730,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f78e9d8a5c81b3468dfecaf9adc42a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionSound: {fileID: 8300000, guid: d0f30f848ec8f7e4fb38bca1b978b39b, type: 3}
