@@ -12,16 +12,18 @@ public class Attack : MonoBehaviour
     [SerializeField] GameObject verticalExplosion;
     [SerializeField] GameObject superExplosion;
     [SerializeField] AudioClip wallBounce;
-    [SerializeField] AudioClip attackBounce;
     [SerializeField] AudioClip superChargedSound;
+    AudioClip explosionSound;
+    AudioSource rightSide;
+    AudioSource leftSide;
     ParticleSystem.MainModule settings;
     PlayerMovement player;
     Transform attackScale;
     BoxCollider2D boxCollider;
     PolygonCollider2D polyCollider;
     bool superCharged = false;
+    public bool isPlayingAudio = false;
     int relativePosition;
-
     public int bounces = 0;
     float xSpeed;
     void Start()
@@ -36,6 +38,8 @@ public class Attack : MonoBehaviour
         settings = explosion.GetComponentInChildren<ParticleSystem>().main;
         polyCollider = gameObject.GetComponent<PolygonCollider2D>();
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
+        rightSide = Camera.main.transform.GetChild(0).gameObject.GetComponent<AudioSource>();
+        leftSide = Camera.main.transform.GetChild(1).gameObject.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -49,8 +53,7 @@ public class Attack : MonoBehaviour
             {
                 if (collision.gameObject.tag == "ground" && bounces < 1)
                 {
-                    relativePosition = RelativePlayerPosition();
-                    AudioSource.PlayClipAtPoint(wallBounce, new Vector3(Camera.main.transform.position.x + relativePosition, attackScale.position.y, Camera.main.transform.position.z - 1));
+                    PlaySpatialSound(wallBounce);
                     sprite.color = new Color(0, 1, 1, 1);
                     bounces += 1;
                     attackScale.localScale = new Vector3(-attackScale.localScale.x, attackScale.localScale.y);
@@ -60,18 +63,14 @@ public class Attack : MonoBehaviour
                 {
                     if (bounces == 1)
                     {
+                        isPlayingAudio = !collision.gameObject.GetComponent<Attack>().isPlayingAudio; // this is here because bounces < 1 implies no explosion
                         settings.startColor = new Color(0, 1, 1, 1);
                         if (collision.gameObject.GetComponent<Attack>().bounces == 1)
                         { // if both attacks are blue
-                            Instantiate(verticalExplosion, attackScale.position, transform.rotation);
+                            InstantiateExplosion(verticalExplosion, !isPlayingAudio);
                         }
+                        InstantiateExplosion(explosion, !isPlayingAudio);
                     }
-                    else
-                    {
-                        settings.startColor = new Color(1, 1, 1, 1);
-                    }
-
-                    Instantiate(explosion, attackScale.position, transform.rotation);
                     Destroy(gameObject);
                 }
                 else if (collision.gameObject.tag == "Explosion") // does not seem to trigger, only the OnParticleCollion method does
@@ -85,8 +84,9 @@ public class Attack : MonoBehaviour
                     if (bounces == 1)
                     {
                         settings.startColor = new Color(0, 1, 1, 1);
-                        Instantiate(explosion, attackScale.position, transform.rotation);
+                        InstantiateExplosion(explosion);
                     }
+
                     Destroy(gameObject);
                 }
             }
@@ -94,7 +94,7 @@ public class Attack : MonoBehaviour
             {
                 if (collision.gameObject.tag != "Explosion")
                 {
-                    Instantiate(superExplosion, attackScale.position, transform.rotation);
+                    InstantiateExplosion(superExplosion);
                     Destroy(gameObject);
                 }
             }
@@ -104,7 +104,7 @@ public class Attack : MonoBehaviour
             if (collision.gameObject.tag == "Attack" && bounces == 1)
             {
                 transform.eulerAngles = new Vector3(0, 0, -90 * Mathf.Sign(attackScale.localScale.x));
-                Instantiate(lineExplosion, attackScale.position, transform.rotation);
+                InstantiateExplosion(lineExplosion);
                 Destroy(gameObject);
             }
         }
@@ -116,26 +116,31 @@ public class Attack : MonoBehaviour
             superCharged = true;
             sprite.color = new Color(0, 0, 0, 1);
             xSpeed = xSpeed / 2f;
-            relativePosition = RelativePlayerPosition();
-            AudioSource.PlayClipAtPoint(superChargedSound, new Vector3(Camera.main.transform.position.x+relativePosition, attackScale.position.y, Camera.main.transform.position.z - 1));
+            PlaySpatialSound(superChargedSound);
         }
         else if (other.GetComponent<LineExplosion>() != null && !superCharged)
         {
-            settings.startColor = new Color(0, 1, 1, 1);
-            Instantiate(explosion, attackScale.position, transform.rotation);
+            settings.startColor = new Color(1, 0, 0, 1);
+            InstantiateExplosion(explosion);
             Destroy(gameObject);
         }
 
     }
-    private int RelativePlayerPosition() {
+    private void PlaySpatialSound(AudioClip clip) {
         if (player.transform.position.x > attackScale.position.x) //Player to the right of attack
         {
-            return -1;
+            leftSide.PlayOneShot(clip);
         }
         else if (player.transform.position.x < attackScale.position.x) //Player to the left of attack
         {
-            return 1;
+            rightSide.PlayOneShot(clip);
         }
-        return 0; //player right at the attack
+    }
+
+    private void InstantiateExplosion(GameObject newExplosion, bool playSound = true) {
+        explosionSound = Instantiate(newExplosion, attackScale.position, transform.rotation).gameObject.GetComponent<Explosion>().explosionSound;
+        if(playSound) {
+            PlaySpatialSound(explosionSound);
+        }
     }
 }
