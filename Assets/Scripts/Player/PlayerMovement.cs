@@ -113,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator ShieldCoolDown()
     {
-        yield return new WaitForSecondsRealtime(2f);
+        yield return new WaitForSecondsRealtime(.5f);
         shield.SetActive(false);
         yield return new WaitForSecondsRealtime(shieldCoolDown);
         shieldOnCoolDown = false;

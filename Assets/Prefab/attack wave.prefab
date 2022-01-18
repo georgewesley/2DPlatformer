@@ -155,6 +155,13 @@ MonoBehaviour:
   wallBounce: {fileID: 8300000, guid: e8ac290d5f74af540846cb8fb19be0ae, type: 3}
   superChargedSound: {fileID: 8300000, guid: f2839bcb13940bb40827176daac3aa27, type: 3}
   enemyDeathSound: {fileID: 8300000, guid: d986de2678f6cf34f8e6fbb839e60b96, type: 3}
+  colorList:
+  - {r: 0, g: 1, b: 1, a: 1}
+  - {r: 0.29214135, g: 0.58691025, b: 0.9528302, a: 1}
+  - {r: 0.16509432, g: 0.32853925, b: 1, a: 1}
+  - {r: 0.05724907, g: 0, b: 1, a: 1}
+  - {r: 0.461308, g: 0, b: 1, a: 1}
+  - {r: 0.29411766, g: 0, b: 0.50980395, a: 1}
   isPlayingAudio: 0
   bounces: 0
 --- !u!60 &2742691629316938788

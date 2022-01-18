@@ -1821,6 +1821,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 572331452320462838}
     m_Modifications:
+    - target: {fileID: 817038728898247668, guid: c4316969cd66cef43a5b32aeab7a60ce, type: 3}
+      propertyPath: shieldCoolDown
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4857538250594336433, guid: c4316969cd66cef43a5b32aeab7a60ce, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.x
       value: 0.5

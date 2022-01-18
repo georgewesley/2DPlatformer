@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 1f;
+    public float moveSpeed = 1f;
     [SerializeField] ParticleSystem particles;
     Rigidbody2D myRigidBody;
     Transform currentTransform;
@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    public virtual void OnTriggerExit2D(Collider2D collision)
     {
         if (isAlive)
         {

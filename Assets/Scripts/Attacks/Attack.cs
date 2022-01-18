@@ -14,6 +14,7 @@ public class Attack : MonoBehaviour
     [SerializeField] AudioClip wallBounce;
     [SerializeField] AudioClip superChargedSound;
     [SerializeField] AudioClip enemyDeathSound;
+    [SerializeField] List<Color> colorList;
     AudioClip explosionSound;
     AudioSource rightSide;
     AudioSource leftSide;
@@ -52,30 +53,37 @@ public class Attack : MonoBehaviour
         if (collision.otherCollider == polyCollider) { //front
             if (!superCharged)
             {
-                Debug.Log(collision.gameObject.tag);
-                if(collision.gameObject.tag == "Shield")
+                
+                if(collision.gameObject.tag == "Shield" && colorList.Count > 0)
                 {
                     attackScale.localScale = new Vector3(-attackScale.localScale.x, attackScale.localScale.y);
-                    sprite.color = new Color(75/255, 0, 130/255, 1);
+                    sprite.color = colorList[0];
+                    colorList.RemoveAt(0);
+                    Debug.Log("Color Change: " + colorList.Count);
                     bounces += 1;
-                    xSpeed = attackScale.localScale.x * bulletSpeed * 2;
+                    xSpeed = -xSpeed * 1.05f;
+                }
+                else if(collision.gameObject.tag == "Shield") {
+                    Destroy(gameObject);
                 }
                 else if (collision.gameObject.tag == "ground" && bounces < 1)
                 {
                     PlaySpatialSound(wallBounce);
-                    sprite.color = new Color(0, 1, 1, 1);
+                    sprite.color = colorList[0];
+                    colorList.RemoveAt(0);
+                    Debug.Log("Color Change: " + colorList.Count);
                     bounces += 1;
                     attackScale.localScale = new Vector3(-attackScale.localScale.x, attackScale.localScale.y);
                     xSpeed = attackScale.localScale.x * bulletSpeed / 2;
                 }
                 else if (collision.gameObject.tag == "Attack")
                 {
-                    if (bounces == 1)
+                    if (bounces > 0)
                     {
                         isPlayingAudio = !collision.gameObject.GetComponent<Attack>().isPlayingAudio; // this is here because bounces < 1 implies no explosion
-                        settings.startColor = new Color(0, 1, 1, 1);
+                        settings.startColor = sprite.color;
                         if (collision.gameObject.GetComponent<Attack>().bounces == 1)
-                        { // if both attacks are blue
+                        { // if both attacks have bounced
                             InstantiateExplosion(verticalExplosion, !isPlayingAudio);
                         }
                         InstantiateExplosion(explosion);
@@ -90,9 +98,9 @@ public class Attack : MonoBehaviour
                 }
                 else
                 {
-                    if (bounces == 1)
+                    if (bounces > 0)
                     {
-                        settings.startColor = new Color(0, 1, 1, 1);
+                        settings.startColor = sprite.color;
                         InstantiateExplosion(explosion);
                     }
                     else
