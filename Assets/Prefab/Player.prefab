@@ -122,6 +122,7 @@ GameObject:
   - component: {fileID: 6797561244729073686}
   - component: {fileID: 4857538250594336433}
   - component: {fileID: 6823246190359114627}
+  - component: {fileID: 4763386025924533002}
   m_Layer: 13
   m_Name: Shield
   m_TagString: Shield
@@ -191,6 +192,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 7
+--- !u!114 &4763386025924533002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4611095534960464398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e1ebd4536c07e946b9012f253140cb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bouncesToBreak: 10
+  shieldBreak: {fileID: 612467832597912054, guid: df7af6b931c8997448f5cda996220fb9, type: 3}
+  explosion: {fileID: 612467832597912054, guid: 4d7c3ae2007898042a958ed2f83aaddf, type: 3}
+  shieldBlock: {fileID: 8300000, guid: fd25b54afd2dcc74eb7ebe52f5f2f42f, type: 3}
 --- !u!1 &5831130008606949159
 GameObject:
   m_ObjectHideFlags: 0

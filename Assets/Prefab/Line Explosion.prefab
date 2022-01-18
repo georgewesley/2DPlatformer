@@ -4828,3 +4828,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionSound: {fileID: 8300000, guid: 5aae86e3c7dfa164cbad198f1dc299cb, type: 3}
+  selfDestructTime: 5

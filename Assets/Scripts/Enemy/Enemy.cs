@@ -35,7 +35,7 @@ public class Enemy : MonoBehaviour
 
     public virtual void OnTriggerExit2D(Collider2D collision)
     {
-        if (isAlive)
+        if (isAlive&&collision.gameObject.tag=="ground")
         {
             moveSpeed = -moveSpeed;
             FlipEnemyFacing();
@@ -56,7 +56,7 @@ public class Enemy : MonoBehaviour
             Destroy(collision.gameObject);
         }
     }
-    private void OnParticleCollision(GameObject other)
+    public virtual void OnParticleCollision(GameObject other)
     {
         if (other.gameObject.tag == "Explosion")
         {

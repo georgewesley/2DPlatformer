@@ -9731,3 +9731,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionSound: {fileID: 8300000, guid: d0f30f848ec8f7e4fb38bca1b978b39b, type: 3}
+  selfDestructTime: 20

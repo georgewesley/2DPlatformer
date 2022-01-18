@@ -13,7 +13,6 @@ public class Exit : MonoBehaviour
         }
         
     }
-
     private IEnumerator SceneDelay() {
         yield return new WaitForSecondsRealtime(1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);

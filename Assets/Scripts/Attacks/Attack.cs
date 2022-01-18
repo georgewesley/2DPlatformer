@@ -23,9 +23,9 @@ public class Attack : MonoBehaviour
     Transform attackScale;
     BoxCollider2D boxCollider;
     PolygonCollider2D polyCollider;
+    public Color lastColor;
     bool superCharged = false;
     public bool isPlayingAudio = false;
-    int relativePosition;
     public int bounces = 0;
     float xSpeed;
     void Start()
@@ -58,8 +58,8 @@ public class Attack : MonoBehaviour
                 {
                     attackScale.localScale = new Vector3(-attackScale.localScale.x, attackScale.localScale.y);
                     sprite.color = colorList[0];
+                    StartCoroutine(SetLastColor(colorList[0]));
                     colorList.RemoveAt(0);
-                    Debug.Log("Color Change: " + colorList.Count);
                     bounces += 1;
                     xSpeed = -xSpeed * 1.05f;
                 }
@@ -70,8 +70,8 @@ public class Attack : MonoBehaviour
                 {
                     PlaySpatialSound(wallBounce);
                     sprite.color = colorList[0];
-                    colorList.RemoveAt(0);
-                    Debug.Log("Color Change: " + colorList.Count);
+                    StartCoroutine(SetLastColor(colorList[0]));
+                    colorList.RemoveAt(0);               
                     bounces += 1;
                     attackScale.localScale = new Vector3(-attackScale.localScale.x, attackScale.localScale.y);
                     xSpeed = attackScale.localScale.x * bulletSpeed / 2;
@@ -146,7 +146,7 @@ public class Attack : MonoBehaviour
         }
 
     }
-    private void PlaySpatialSound(AudioClip clip) {
+    public void PlaySpatialSound(AudioClip clip) {
         if (player.transform.position.x > attackScale.position.x) //Player to the right of attack
         {
             leftSide.PlayOneShot(clip);
@@ -157,10 +157,15 @@ public class Attack : MonoBehaviour
         }
     }
 
-    private void InstantiateExplosion(GameObject newExplosion, bool playSound = true) {
+    public void InstantiateExplosion(GameObject newExplosion, bool playSound = true) {
         explosionSound = Instantiate(newExplosion, attackScale.position, transform.rotation).gameObject.GetComponent<Explosion>().explosionSound;
         if(playSound) {
             PlaySpatialSound(explosionSound);
         }
+    }
+    IEnumerator SetLastColor(Color color)
+    {
+        yield return new WaitForSeconds(.01f);
+        lastColor = color;
     }
 }

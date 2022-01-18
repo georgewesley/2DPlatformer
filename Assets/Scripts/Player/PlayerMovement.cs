@@ -91,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(isAlive&&!shieldOnCoolDown)
         {
+            playerAnimation.SetTrigger("block");
             shield.SetActive(true);
             shieldOnCoolDown = true;
             StartCoroutine(ShieldCoolDown());

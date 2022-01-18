@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ExplosionEnemy : Enemy
 {
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Attack")
