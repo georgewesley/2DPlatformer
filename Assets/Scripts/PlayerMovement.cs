@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform sword;
     [SerializeField] float coolDown;
     [SerializeField] AudioClip attackSound;
+    [SerializeField] AudioClip deathSound;
 
     AudioSource playerSound;
     GameSession gameSession;
@@ -183,6 +184,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     public void Die() {
+        playerSound.PlayOneShot(deathSound);
         isAlive = false;
         playerCollider.enabled = false;
         playerBody.gravityScale = gravity;

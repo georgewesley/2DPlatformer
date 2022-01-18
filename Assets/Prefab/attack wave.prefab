@@ -154,7 +154,8 @@ MonoBehaviour:
   superExplosion: {fileID: 7328460538933913178, guid: 4656ec29a8ed35c4dbc9c7b1ea0832b3, type: 3}
   wallBounce: {fileID: 8300000, guid: afb2f2751bec3c24eb5b3f5e7b45be12, type: 3}
   superChargedSound: {fileID: 8300000, guid: f2839bcb13940bb40827176daac3aa27, type: 3}
-  soundAxisAdjustment: 5
+  enemyDeathSound: {fileID: 8300000, guid: d986de2678f6cf34f8e6fbb839e60b96, type: 3}
+  isPlayingAudio: 0
   bounces: 0
 --- !u!60 &2742691629316938788
 PolygonCollider2D:

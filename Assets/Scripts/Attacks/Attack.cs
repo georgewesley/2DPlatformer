@@ -13,6 +13,7 @@ public class Attack : MonoBehaviour
     [SerializeField] GameObject superExplosion;
     [SerializeField] AudioClip wallBounce;
     [SerializeField] AudioClip superChargedSound;
+    [SerializeField] AudioClip enemyDeathSound;
     AudioClip explosionSound;
     AudioSource rightSide;
     AudioSource leftSide;
@@ -69,7 +70,7 @@ public class Attack : MonoBehaviour
                         { // if both attacks are blue
                             InstantiateExplosion(verticalExplosion, !isPlayingAudio);
                         }
-                        InstantiateExplosion(explosion, !isPlayingAudio);
+                        InstantiateExplosion(explosion);
                     }
                     Destroy(gameObject);
                 }
@@ -86,7 +87,10 @@ public class Attack : MonoBehaviour
                         settings.startColor = new Color(0, 1, 1, 1);
                         InstantiateExplosion(explosion);
                     }
-
+                    else
+                    {
+                        PlaySpatialSound(enemyDeathSound);
+                    }
                     Destroy(gameObject);
                 }
             }

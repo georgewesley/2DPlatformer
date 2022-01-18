@@ -77,7 +77,7 @@ public class GameSession : MonoBehaviour
 
     public void SceneChange(Scene s, LoadSceneMode l)
     {
-        Debug.Log("We loaded a scene");
+        FindObjectOfType<PlayerMovement>().gameObject.transform.position = new Vector2(0, 0);
         UpdateEnemy();
     }
 }

@@ -311,6 +311,7 @@ MonoBehaviour:
   sword: {fileID: 272178688}
   coolDown: 0
   attackSound: {fileID: 8300000, guid: aac03388bd76a4e4d869f7067d68205e, type: 3}
+  deathSound: {fileID: 8300000, guid: d986de2678f6cf34f8e6fbb839e60b96, type: 3}
   initialPosition: {x: 0, y: 0, z: 0}
 --- !u!61 &1614576022
 BoxCollider2D:
