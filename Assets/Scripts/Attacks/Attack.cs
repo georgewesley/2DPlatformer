@@ -52,7 +52,15 @@ public class Attack : MonoBehaviour
         if (collision.otherCollider == polyCollider) { //front
             if (!superCharged)
             {
-                if (collision.gameObject.tag == "ground" && bounces < 1)
+                Debug.Log(collision.gameObject.tag);
+                if(collision.gameObject.tag == "Shield")
+                {
+                    attackScale.localScale = new Vector3(-attackScale.localScale.x, attackScale.localScale.y);
+                    sprite.color = new Color(75/255, 0, 130/255, 1);
+                    bounces += 1;
+                    xSpeed = attackScale.localScale.x * bulletSpeed * 2;
+                }
+                else if (collision.gameObject.tag == "ground" && bounces < 1)
                 {
                     PlaySpatialSound(wallBounce);
                     sprite.color = new Color(0, 1, 1, 1);

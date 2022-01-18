@@ -9,6 +9,7 @@ TagManager:
   - Attack
   - Background
   - Explosion
+  - Shield
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Enemies
   - Hazards
   - Attacks
-  - 
+  - Shield
   - 
   - 
   - 

@@ -15,7 +15,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float ladderDecentSpeed = 10f;
     [SerializeField] GameObject attack;
     [SerializeField] Transform sword;
+    [SerializeField] GameObject shield;
     [SerializeField] float coolDown;
+    [SerializeField] float shieldCoolDown;
     [SerializeField] AudioClip attackSound;
     [SerializeField] AudioClip deathSound;
 
@@ -28,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     bool isGrounded = false;
     bool isAlive = true;
     bool isOnCoolDown = false;
+    bool shieldOnCoolDown = false;
     float gravity;
 
     void Start()
@@ -82,7 +85,17 @@ public class PlayerMovement : MonoBehaviour
             playerSound.PlayOneShot(attackSound);
             StartCoroutine(InstantiateAttack());
         }
-       
+    }
+
+    void OnBlock(InputValue value)
+    {
+        if(isAlive&&!shieldOnCoolDown)
+        {
+            shield.SetActive(true);
+            shieldOnCoolDown = true;
+            StartCoroutine(ShieldCoolDown());
+            Debug.Log("shield!");
+        }
     }
 
     IEnumerator InstantiateAttack()
@@ -96,6 +109,14 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(coolDown); //note that the cool down will also essentially include .34 seconds from above InstantiateAttack 
         isOnCoolDown = false;
+    }
+
+    IEnumerator ShieldCoolDown()
+    {
+        yield return new WaitForSecondsRealtime(2f);
+        shield.SetActive(false);
+        yield return new WaitForSecondsRealtime(shieldCoolDown);
+        shieldOnCoolDown = false;
     }
 
     void Run()
@@ -201,5 +222,7 @@ public class PlayerMovement : MonoBehaviour
         isAlive = true;
         playerCollider.enabled = true;
         playerAnimation.SetTrigger("alive");
+        isOnCoolDown = false;
+        shieldOnCoolDown = false;
     }
 }
