@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
 {
     public float moveSpeed = 1f;
     [SerializeField] ParticleSystem particles;
+    [SerializeField] int scoreForKill;
     Rigidbody2D myRigidBody;
     Transform currentTransform;
     Animator enemyAnimator;
@@ -67,7 +68,7 @@ public class Enemy : MonoBehaviour
     {
         if (isAlive)
         {
-            FindObjectOfType<GameSession>().GetComponent<GameSession>().KillEnemy();
+            FindObjectOfType<GameSession>().GetComponent<GameSession>().KillEnemy(scoreForKill);
             isAlive = false;
             myRigidBody.isKinematic = true;
             enemyAnimator.SetTrigger("death");

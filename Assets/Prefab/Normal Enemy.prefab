@@ -4999,4 +4999,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   particles: {fileID: 543423316}
+  scoreForKill: 50
   isAlive: 1

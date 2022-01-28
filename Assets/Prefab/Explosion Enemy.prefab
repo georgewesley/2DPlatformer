@@ -4973,6 +4973,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   particles: {fileID: 543423316}
+  scoreForKill: 200
   isAlive: 1
 --- !u!61 &1358140337751546773
 BoxCollider2D:

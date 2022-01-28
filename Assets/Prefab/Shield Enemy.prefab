@@ -5000,6 +5000,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   particles: {fileID: 543423316}
+  scoreForKill: 200
   isAlive: 1
 --- !u!1 &8364549620188274518
 GameObject:

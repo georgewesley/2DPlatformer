@@ -89,13 +89,15 @@ public class PlayerMovement : MonoBehaviour
 
     void OnBlock(InputValue value)
     {
+        Debug.Log("Try to block");
         if(isAlive&&!shieldOnCoolDown)
         {
+            Debug.Log("Actual Block");
             playerAnimation.SetTrigger("block");
             shield.SetActive(true);
             shieldOnCoolDown = true;
+            playerCollider.enabled = false;
             StartCoroutine(ShieldCoolDown());
-            Debug.Log("shield!");
         }
     }
 
@@ -115,6 +117,7 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator ShieldCoolDown()
     {
         yield return new WaitForSecondsRealtime(.5f);
+        playerCollider.enabled = true;
         shield.SetActive(false);
         yield return new WaitForSecondsRealtime(shieldCoolDown);
         shieldOnCoolDown = false;
@@ -187,10 +190,13 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void OnTriggerExit2D(Collider2D other) {
-        if(other.gameObject.tag == "Background" && isAlive || (other.gameObject.tag == "Explosion" && isAlive)) 
+        if(other.gameObject.tag == "Background" && isAlive && shield.activeSelf == false|| (other.gameObject.tag == "Explosion" && isAlive)) 
         //if no isAlive here, then this will trigger second death if a collider is turned off
         {
-            Die();
+            if (other.gameObject.name != "Vertical Explosion(Clone)")
+            {
+                Die();
+            }
         }
     }
 
@@ -225,5 +231,11 @@ public class PlayerMovement : MonoBehaviour
         playerAnimation.SetTrigger("alive");
         isOnCoolDown = false;
         shieldOnCoolDown = false;
+    }
+
+    public void Updraft()
+    {
+        playerBody.AddForce(new Vector2(0f, .2f));
+        playerAnimation.SetTrigger("jump");
     }
 }

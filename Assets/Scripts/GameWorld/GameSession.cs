@@ -55,14 +55,23 @@ public class GameSession : MonoBehaviour
     public void UpdateScore(int score)
     {
         string text = scoreText.text.Remove(0, 6);
-        Debug.Log(text);
-        Debug.Log(score);
-        scoreText.text = "Score: " + (int.Parse(text) + score).ToString();
+        int combinedSocre = int.Parse(text) + score;
+        if (combinedSocre >= 1000)
+        {
+            playerLives++;
+            livesText.text = "Lives: " + playerLives.ToString();
+            scoreText.text = "Score: " + (combinedSocre-1000).ToString();
+        }
+        else
+        {
+            scoreText.text = "Score: " + (combinedSocre).ToString();
+        }
     }
 
-    public void KillEnemy()
+    public void KillEnemy(int score)
     {
         numEnemy--;
+        UpdateScore(score);
         enemyText.text = "Enemies: " + numEnemy.ToString();
     }
     public void UpdateEnemy()
@@ -77,7 +86,7 @@ public class GameSession : MonoBehaviour
 
     public void SceneChange(Scene s, LoadSceneMode l)
     {
-        FindObjectOfType<PlayerMovement>().gameObject.transform.position = new Vector2(0, 0);
+        FindObjectOfType<PlayerMovement>().gameObject.transform.position = new Vector2(-3, 0);
         UpdateEnemy();
     }
 }
